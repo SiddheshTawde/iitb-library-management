@@ -1,0 +1,39 @@
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Book {
+    id         String         @id @default(uuid())
+    title      String
+    author     String
+    cover     String
+    isbn       String         @unique
+    category   Category       @relation(fields: [categoryId], references: [id])
+    categoryId String
+    borrowedBy BorrowRecord[]
+    createdAt  DateTime       @default(now())
+    updatedAt  DateTime       @updatedAt
+}
+
+model Category {
+    id        String   @id @default(uuid())
+    name      String   @unique
+    books     Book[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model BorrowRecord {
+    id         String    @id @default(uuid())
+    user       String
+    userId     String
+    book       Book      @relation(fields: [bookId], references: [id])
+    bookId     String
+    borrowedAt DateTime  @default(now())
+    returnedAt DateTime?
+}

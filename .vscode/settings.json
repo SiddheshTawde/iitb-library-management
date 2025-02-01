@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Prisma Dev",
+            "database": "${workspaceFolder:iitb-library}/prisma/dev.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

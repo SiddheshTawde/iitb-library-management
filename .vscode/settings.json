@@ -4,7 +4,7 @@
             "previewLimit": 50,
             "driver": "SQLite",
             "name": "Prisma Dev",
-            "database": "${workspaceFolder:iitb-library}/prisma/dev.db"
+            "database": "${workspaceFolder:iitb-library-management}/prisma/dev.db"
         }
     ],
     "sqltools.useNodeRuntime": true

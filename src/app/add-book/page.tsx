@@ -20,10 +20,7 @@ export const newBookFormSchema = z.object({
   author: z.string().min(4).max(40),
   isbn: z.string().regex(/^\d{3}-\d-\d{4}-\d{4}-\d$/, "Invalid ISBN"),
   category: z.string(),
-  cover: z
-    .instanceof(FileList)
-    .refine((files) => files.length === 1, "You must upload exactly one image.")
-    .refine((files) => files.length > 0 && files[0].type.startsWith("image/"), "Only image files are allowed."),
+  cover: z.instanceof(File).refine((file) => file.type.startsWith("image/"), "Only images are allowed."),
 });
 
 export default function Page() {
@@ -84,7 +81,7 @@ export default function Page() {
               <FormItem>
                 <FormLabel>Book title</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Shrimad Bhagavad Gita" disabled={field.disabled || isSubmitting} />
+                  <Input {...field} disabled={field.disabled || isSubmitting} />
                 </FormControl>
                 <FormDescription>Name on the cover of the book.</FormDescription>
                 <FormMessage />
@@ -98,7 +95,7 @@ export default function Page() {
               <FormItem>
                 <FormLabel>Authors</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Ved Vyas" disabled={field.disabled || isSubmitting} />
+                  <Input {...field} disabled={field.disabled || isSubmitting} />
                 </FormControl>
                 <FormDescription>For multiple authors, use comma to separated values.</FormDescription>
                 <FormMessage />
@@ -115,11 +112,11 @@ export default function Page() {
                   <Input
                     type="file"
                     accept="image/*"
-                    placeholder="Enter the name of the book"
                     onChange={(e) => {
                       const fileList = e.target.files;
                       if (fileList && fileList.length > 0) {
-                        field.onChange(fileList);
+                        form.resetField("cover");
+                        field.onChange(fileList[0]);
                       }
                     }}
                     disabled={field.disabled || isSubmitting}
@@ -145,7 +142,7 @@ export default function Page() {
                       >
                         {field.value
                           ? categories.find((category) => category.id === field.value)?.name
-                          : "Search category or genre"}
+                          : "Category or genre"}
                         <ChevronsUpDown className="opacity-50" />
                       </Button>
                     </PopoverTrigger>
@@ -154,6 +151,7 @@ export default function Page() {
                         <CommandInput
                           placeholder="Search category or genre"
                           className="h-9 w-full"
+                          value={searchText}
                           onChangeCapture={({ target }: React.ChangeEvent<HTMLInputElement>) => setSearchText(target.value)}
                         />
                         <CommandList>
@@ -221,7 +219,7 @@ export default function Page() {
       </Form>
 
       <section className="flex-1 flex flex-col">
-        <p>Preview:</p>
+        <p className="font-medium">Preview:</p>
 
         <div className="flex flex-col gap-4 w-full border p-4 rounded flex-1">
           <div>
@@ -229,7 +227,7 @@ export default function Page() {
             {form.getValues("author") ? <p className="text-base">By {form.getValues("author")}</p> : null}
           </div>
 
-          <div>{form.getValues("cover") ? <img src={URL.createObjectURL(form.getValues("cover")?.[0])} /> : null}</div>
+          <div>{form.getValues("cover") ? <img src={URL.createObjectURL(form.getValues("cover"))} /> : null}</div>
         </div>
       </section>
     </main>

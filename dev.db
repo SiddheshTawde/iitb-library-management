@@ -1,5 +1,0 @@
-SELECT * FROM Book;
-DELETE FROM Book;
-
-SELECT * FROM Category;
-DELETE FROM Category;

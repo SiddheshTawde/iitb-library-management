@@ -227,7 +227,15 @@ export default function Page() {
             {form.getValues("author") ? <p className="text-base">By {form.getValues("author")}</p> : null}
           </div>
 
-          <div>{form.getValues("cover") ? <img src={URL.createObjectURL(form.getValues("cover"))} /> : null}</div>
+          <div>
+            {form.getValues("cover") ? (
+              <img
+                src={URL.createObjectURL(form.getValues("cover"))}
+                alt={form.getValues("cover").name}
+                className="max-h-[60vh]"
+              />
+            ) : null}
+          </div>
         </div>
       </section>
     </main>

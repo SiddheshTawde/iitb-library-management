@@ -13,6 +13,7 @@
     "@clerk/nextjs": "^6.10.6",
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.3.0",
+    "@radix-ui/react-aspect-ratio": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.5",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-popover": "^1.1.5",
@@ -29,7 +30,8 @@
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^11.0.5",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

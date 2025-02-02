@@ -11,16 +11,12 @@ import {
   BreadcrumbSeparator,
 } from "@root/components/ui/breadcrumb";
 import Link from "next/link";
-
-const formatURL = (slug: string) => {
-  if (slug === "") {
-    return "Home";
-  }
-
-  return slug.replace(/-/g, " ");
-};
+import { useBookList } from "@root/store";
+import { formatBreadcrumb } from "@root/lib/utils";
 
 export function BreadcrumbClient() {
+  const { bookList } = useBookList.getState();
+
   const pathname = usePathname();
   const [slugs, updateSlugs] = React.useState<string[]>([""]);
 
@@ -35,10 +31,10 @@ export function BreadcrumbClient() {
           <React.Fragment key={index}>
             <BreadcrumbItem>
               {index === slugs.length - 1 ? (
-                <BreadcrumbPage className="capitalize">{formatURL(slug)}</BreadcrumbPage>
+                <BreadcrumbPage className="capitalize">{formatBreadcrumb(slug, bookList)}</BreadcrumbPage>
               ) : (
                 <BreadcrumbLink className="capitalize" asChild>
-                  <Link href={"/" + slug}>{formatURL(slug)}</Link>
+                  <Link href={"/" + slug}>{formatBreadcrumb(slug, bookList)}</Link>
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>

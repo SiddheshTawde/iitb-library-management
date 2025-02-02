@@ -7,6 +7,26 @@ import { prisma } from "@root/database";
 import { supabase } from "@root/storage";
 import { newBookFormSchema } from "@root/app/add-book/page";
 
+export const getBookAction = async () => {
+  try {
+    const book = await prisma.book.findMany({
+      select: {
+        id: true,
+        title: true,
+        author: true,
+        cover: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+      take: 10,
+    });
+    return book;
+  } catch (error) {
+    return [];
+  }
+};
+
 export const addBookAction = async (payload: z.infer<typeof newBookFormSchema>) => {
   try {
     const file = payload.cover;

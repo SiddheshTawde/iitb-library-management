@@ -9,7 +9,7 @@ export function Navbar() {
   const { user } = useUser();
 
   return (
-    <nav className="w-full bg-black/5 px-4 h-8 flex items-center">
+    <nav className="w-full bg-neutral-50 px-4 h-8 flex items-center border-b">
       <div className="container mx-auto flex items-center justify-between w-full px-4">
         <BreadcrumbClient />
         {user && user.publicMetadata.role === "admin" ? (

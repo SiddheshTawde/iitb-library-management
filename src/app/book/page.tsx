@@ -8,7 +8,7 @@ export default function Page() {
 
   React.useEffect(() => {
     router.back();
-  }, []);
+  }, [router]);
 
   return null;
 }

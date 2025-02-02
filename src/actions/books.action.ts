@@ -23,6 +23,7 @@ export const getBookAction = async () => {
     });
     return book;
   } catch (error) {
+    console.error(error);
     return [];
   }
 };
@@ -55,6 +56,7 @@ export const addBookAction = async (payload: z.infer<typeof newBookFormSchema>) 
 
     return false;
   } catch (error) {
+    console.error(error);
     return false;
   }
 };

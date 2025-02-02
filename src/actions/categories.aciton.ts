@@ -8,6 +8,7 @@ export const getCategories = async () => {
 
     return categories;
   } catch (error) {
+    console.error(error)
     return [];
   }
 };
@@ -27,6 +28,7 @@ export const addCategory = async (category: string) => {
 
     return categories;
   } catch (error) {
+    console.error(error)
     return [];
   }
 };

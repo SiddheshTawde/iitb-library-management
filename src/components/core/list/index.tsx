@@ -17,7 +17,7 @@ export const RenderBookList = ({ books }: { books: BookList }) => {
     if (books.length > 0) {
       setBookList(books);
     }
-  }, [books]);
+  }, [books, setBookList]);
 
   return (
     <ScrollArea className="py-6 h-full w-full whitespace-nowrap">

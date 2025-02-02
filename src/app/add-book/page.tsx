@@ -14,6 +14,7 @@ import { addBookAction } from "@root/actions/books.action";
 import { Popover, PopoverContent, PopoverTrigger } from "@root/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@root/components/ui/command";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@root/components/ui/form";
+import Image from "next/image";
 
 export const newBookFormSchema = z.object({
   title: z.string().min(4).max(40),
@@ -229,10 +230,12 @@ export default function Page() {
 
           <div>
             {form.getValues("cover") ? (
-              <img
+              <Image
                 src={URL.createObjectURL(form.getValues("cover"))}
                 alt={form.getValues("cover").name}
                 className="max-h-[60vh]"
+                width={512}
+                height={512}
               />
             ) : null}
           </div>

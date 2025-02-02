@@ -17,7 +17,7 @@ export const useBookList = createStore<BookStore>()(
   persist(
     devtools((set) => ({
       bookList: [],
-      setBookList: (newList: any) => set(() => ({ bookList: newList })),
+      setBookList: (newList) => set(() => ({ bookList: newList })),
     })),
     { name: "book-storage" }
   )

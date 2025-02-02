@@ -2,11 +2,13 @@
 
 import { z } from "zod";
 import React from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { cn, formatISBN } from "@root/lib/utils";
+import { useToast } from "@root/hooks/use-toast";
 import { Input } from "@root/components/ui/input";
 import { Button } from "@root/components/ui/button";
 import { addCategory, getCategories } from "@root/actions/categories.aciton";
@@ -14,9 +16,10 @@ import { addBookAction } from "@root/actions/books.action";
 import { Popover, PopoverContent, PopoverTrigger } from "@root/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@root/components/ui/command";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@root/components/ui/form";
-import Image from "next/image";
+import { ToastAction } from "@root/components/ui/toast";
+import Link from "next/link";
 
-export const newBookFormSchema = z.object({
+const newBookFormSchema = z.object({
   title: z.string().min(4).max(40),
   author: z.string().min(4).max(40),
   isbn: z.string().regex(/^\d{3}-\d-\d{4}-\d{4}-\d$/, "Invalid ISBN"),
@@ -24,7 +27,10 @@ export const newBookFormSchema = z.object({
   cover: z.instanceof(File).refine((file) => file.type.startsWith("image/"), "Only images are allowed."),
 });
 
+export type newBookFormSchemaType = typeof newBookFormSchema;
+
 export default function Page() {
+  const { toast } = useToast();
   const [searchText, setSearchText] = React.useState("");
   const [categories, setCategories] = React.useState<{ id: string; name: string }[]>([]);
   const [isSubmitting, toggleSubmitting] = React.useState(false);
@@ -39,7 +45,7 @@ export default function Page() {
       });
   }, []);
 
-  const form = useForm<z.infer<typeof newBookFormSchema>>({
+  const form = useForm<z.infer<newBookFormSchemaType>>({
     resolver: zodResolver(newBookFormSchema),
     defaultValues: {
       title: "",
@@ -55,9 +61,28 @@ export default function Page() {
 
     if (isSuccess) {
       // show success toast
+      toast({
+        title: "Book added to library",
+        description: "You can now borrow this book",
+        action: (
+          <ToastAction altText="Go to book">
+            <Link href="/">Go to book</Link>
+          </ToastAction>
+        ),
+      });
       form.reset();
     } else {
       // show failure toast
+      toast({
+        variant: "destructive",
+        title: "Something went wrong.",
+        description: "Unable to add to library. Try again later.",
+        action: (
+          <ToastAction altText="Try again" onClick={() => onSubmit(values)}>
+            Try again
+          </ToastAction>
+        ),
+      });
     }
   }
 

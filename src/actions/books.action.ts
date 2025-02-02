@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 
 import { prisma } from "@root/database";
 import { supabase } from "@root/storage";
-import { newBookFormSchema } from "@root/app/add-book/page";
+import type { newBookFormSchemaType } from "@root/app/add-book/page";
 
 export const getBookAction = async () => {
   try {
@@ -28,7 +28,7 @@ export const getBookAction = async () => {
   }
 };
 
-export const addBookAction = async (payload: z.infer<typeof newBookFormSchema>) => {
+export const addBookAction = async (payload: z.infer<newBookFormSchemaType>) => {
   try {
     const file = payload.cover;
 

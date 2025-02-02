@@ -1,4 +1,4 @@
-import { createStore } from "zustand/vanilla";
+import { create } from "zustand";
 import { BookList } from "@root/components/core/list";
 import { devtools, persist } from "zustand/middleware";
 
@@ -13,12 +13,12 @@ interface Actions {
 
 type BookStore = States & Actions;
 
-export const useBookList = createStore<BookStore>()(
+export const useBookList = create<BookStore>()(
   persist(
     devtools((set) => ({
       bookList: [],
       setBookList: (newList) => set(() => ({ bookList: newList })),
     })),
-    { name: "book-storage" }
+    { name: "books-storage" }
   )
 );

@@ -5,19 +5,36 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { useBookList } from "@root/store";
+import { getBookAction } from "@root/actions/books.action";
 import { ScrollArea } from "@root/components/ui/scroll-area";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@root/components/ui/card";
+import { useHasHydrated } from "@root/hooks/use-has-hydrated";
+import { useToast } from "@root/hooks/use-toast";
 
 export type BookList = { id: string; title: string; author: string; cover: string }[];
 
-export const RenderBookList = ({ books }: { books: BookList }) => {
+export const RenderBookList = () => {
+  const hasHydrated = useHasHydrated();
+  const { toast } = useToast();
   const { bookList, setBookList } = useBookList.getState();
 
   React.useEffect(() => {
-    if (books.length > 0) {
-      setBookList(books);
+    if (bookList.length === 0) {
+      getBookAction()
+        .then((res) => {
+          setBookList(res);
+        })
+        .catch(() => {
+          toast({
+            variant: "destructive",
+            title: "Unable to get book list.",
+            description: "If this issue persists, please contact administration.",
+          });
+        });
     }
-  }, [books, setBookList]);
+  }, [bookList, setBookList]);
+
+  if (!hasHydrated) return null;
 
   return (
     <ScrollArea className="py-6 h-full w-full whitespace-nowrap">
